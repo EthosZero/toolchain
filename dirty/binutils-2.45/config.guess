@@ -1600,6 +1600,9 @@ EOF
     *:Ironclad:*:*)
 	GUESS=$UNAME_MACHINE-unknown-ironclad
 	;;
+    *:Ethos:*:*)
+	GUESS=$UNAME_MACHINE-unknown-ethos
+	;;
 esac
 
 # Do we have a guess based on uname results?

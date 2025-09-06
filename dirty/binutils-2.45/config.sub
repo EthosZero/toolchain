@@ -2013,6 +2013,7 @@ case $os in
 	| gnu* \
 	| go32* \
 	| haiku* \
+	| ethos* \
 	| hcos* \
 	| hiux* \
 	| hms* \

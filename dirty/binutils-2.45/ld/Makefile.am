@@ -462,6 +462,7 @@ ALL_64_EMULATION_SOURCES = \
 	eelf_x86_64_cloudabi.c \
 	eelf_x86_64_fbsd.c \
 	eelf_x86_64_haiku.c \
+	eelf_x86_64_ethos.c \
 	eelf_x86_64_sol2.c \
 	ehppa64linux.c \
 	ei386pep.c \
