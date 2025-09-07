@@ -4,20 +4,21 @@ set -e
 NCORES=$(nproc)
 
 build_binutils() {
-	cd build-binutils
-	../dirty/binutils-2.45/configure --target=x86_64-pc-ethos --prefix=$(pwd);
-	make -j$(NCORES)
-	make install
+    mkdir -p build-binutils/
+    cd build-binutils
+    ../dirty/binutils-2.45/configure --target=x86_64-pc-ethos --prefix=$(pwd);
+    make -j$(NCORES)
+    make install
 
-	cd ../
-	echo "[?] binutils is in build-binutils/"
+    cd ../
+    echo "[?] binutils is in build-binutils/"
 }
 
 if [[ -d build-binutils/ ]]
 then
-	echo "build-binutils/ already exists, rebuilding..."
-	build_binutils
-	exit 0
+    echo "build-binutils/ already exists, rebuilding..."
+    build_binutils
+    exit 0
 fi
 
 # Clean everything up
@@ -39,5 +40,4 @@ rm -rf clean/clean/
 
 # Build binutils
 echo "Building binutils"
-mkdir -p build-binutils/
 build_binutils
