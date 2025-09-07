@@ -1,10 +1,12 @@
 #!/bin/bash
 set -e
 
+NCORES=$(nproc)
+
 build_binutils() {
 	cd build-binutils
 	../dirty/binutils-2.45/configure --target=x86_64-pc-ethos --prefix=$(pwd);
-	make
+	make -j$(NCORES)
 	make install
 
 	cd ../
