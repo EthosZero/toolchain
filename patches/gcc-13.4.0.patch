@@ -1,6 +1,6 @@
-diff -ruN clean/gcc-13.4.0/config.sub dirty/gcc-13.4.0/config.sub
---- clean/gcc-13.4.0/config.sub	2025-06-05 12:02:57.000000000 -0400
-+++ dirty/gcc-13.4.0/config.sub	2025-09-06 22:37:36.012039199 -0400
+diff -ruN dirty/gcc-13.4.0/config.sub clean/gcc-13.4.0/config.sub
+--- dirty/gcc-13.4.0/config.sub	2025-09-13 00:19:28.169263628 -0400
++++ clean/gcc-13.4.0/config.sub	2025-09-13 00:20:01.262420710 -0400
 @@ -1749,7 +1749,7 @@
  	     | onefs* | tirtos* | phoenix* | fuchsia* | redox* | bme* \
  	     | midnightbsd* | amdhsa* | unleashed* | emscripten* | wasi* \
@@ -10,9 +10,9 @@ diff -ruN clean/gcc-13.4.0/config.sub dirty/gcc-13.4.0/config.sub
  		;;
  	# This one is extra strict with allowed versions
  	sco3.2v2 | sco3.2v[4-9]* | sco5v6*)
-diff -ruN clean/gcc-13.4.0/fixincludes/mkfixinc.sh dirty/gcc-13.4.0/fixincludes/mkfixinc.sh
---- clean/gcc-13.4.0/fixincludes/mkfixinc.sh	2025-06-05 12:02:57.000000000 -0400
-+++ dirty/gcc-13.4.0/fixincludes/mkfixinc.sh	2025-09-06 22:38:29.806034561 -0400
+diff -ruN dirty/gcc-13.4.0/fixincludes/mkfixinc.sh clean/gcc-13.4.0/fixincludes/mkfixinc.sh
+--- dirty/gcc-13.4.0/fixincludes/mkfixinc.sh	2025-09-13 00:19:21.186133474 -0400
++++ clean/gcc-13.4.0/fixincludes/mkfixinc.sh	2025-09-13 00:20:01.264938537 -0400
 @@ -20,6 +20,8 @@
      powerpcle-*-eabisim* | \
      powerpcle-*-eabi* | \
@@ -22,9 +22,9 @@ diff -ruN clean/gcc-13.4.0/fixincludes/mkfixinc.sh dirty/gcc-13.4.0/fixincludes/
      *-musl* )
  	#  IF there is no include fixing,
  	#  THEN create a no-op fixer and exit
-diff -ruN clean/gcc-13.4.0/gcc/config/ethos.h dirty/gcc-13.4.0/gcc/config/ethos.h
---- clean/gcc-13.4.0/gcc/config/ethos.h	1969-12-31 19:00:00.000000000 -0500
-+++ dirty/gcc-13.4.0/gcc/config/ethos.h	2025-09-07 00:12:02.226550654 -0400
+diff -ruN dirty/gcc-13.4.0/gcc/config/ethos.h clean/gcc-13.4.0/gcc/config/ethos.h
+--- dirty/gcc-13.4.0/gcc/config/ethos.h	1969-12-31 19:00:00.000000000 -0500
++++ clean/gcc-13.4.0/gcc/config/ethos.h	2025-09-13 00:20:01.265715627 -0400
 @@ -0,0 +1,26 @@
 +#undef TARGET_ETHOS_H
 +#define TARGET_ETHOS_H 1
@@ -52,9 +52,9 @@ diff -ruN clean/gcc-13.4.0/gcc/config/ethos.h dirty/gcc-13.4.0/gcc/config/ethos.
 +		builtin_define("__unix__");		\
 +		builtin_define("system=ethos"); \
 +	} while (0);
-diff -ruN clean/gcc-13.4.0/gcc/config.gcc dirty/gcc-13.4.0/gcc/config.gcc
---- clean/gcc-13.4.0/gcc/config.gcc	2025-06-05 12:02:58.000000000 -0400
-+++ dirty/gcc-13.4.0/gcc/config.gcc	2025-09-06 22:39:21.326030119 -0400
+diff -ruN dirty/gcc-13.4.0/gcc/config.gcc clean/gcc-13.4.0/gcc/config.gcc
+--- dirty/gcc-13.4.0/gcc/config.gcc	2025-09-13 00:19:22.951166371 -0400
++++ clean/gcc-13.4.0/gcc/config.gcc	2025-09-13 00:26:21.345966342 -0400
 @@ -993,6 +993,12 @@
  *-*-rdos*)
    use_gcc_stdint=wrap
@@ -68,7 +68,19 @@ diff -ruN clean/gcc-13.4.0/gcc/config.gcc dirty/gcc-13.4.0/gcc/config.gcc
  *-*-solaris2*)
    # i?86-*-solaris2* needs to insert headers between cpu default and
    # Solaris 2 specific ones.
-@@ -2031,6 +2037,9 @@
+@@ -1176,6 +1182,11 @@
+ 	tmake_file="${tmake_file} aarch64/t-aarch64 aarch64/t-aarch64-netbsd"
+ 	extra_options="${extra_options} netbsd.opt netbsd-elf.opt"
+ 	;;
++aarch64*-*-ethos*)
++	tm_file="${tm_file} elfos.h"
++	tm_file="${tm_file} aarch64/aarch64-elf.h aarch64/aarch64-errata.h"
++	tmake_file="${tmake_file} aarch64/t-aarch64"
++	;;
+ aarch64*-*-linux*)
+ 	tm_file="${tm_file} elfos.h gnu-user.h linux.h glibc-stdint.h"
+ 	tm_file="${tm_file} aarch64/aarch64-elf.h aarch64/aarch64-errata.h aarch64/aarch64-linux.h"
+@@ -2031,6 +2042,9 @@
  	gnu_ld=yes
  	gas=yes
  	;;
@@ -78,7 +90,7 @@ diff -ruN clean/gcc-13.4.0/gcc/config.gcc dirty/gcc-13.4.0/gcc/config.gcc
  i[34567]86-*-nto-qnx*)
  	tm_file="${tm_file} i386/att.h tm-dwarf2.h elfos.h i386/unix.h i386/nto.h"
  	extra_options="${extra_options} i386/nto.opt"
-@@ -2122,6 +2131,9 @@
+@@ -2122,6 +2136,9 @@
  	use_gcc_stdint=wrap
  	tm_defines="${tm_defines} TARGET_CYGWIN64=1"
  	;;
