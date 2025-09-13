@@ -1,21 +1,38 @@
 diff -ruN clean/clean/binutils-2.45/bfd/config.bfd dirty/binutils-2.45/bfd/config.bfd
 --- clean/clean/binutils-2.45/bfd/config.bfd	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/bfd/config.bfd	2025-09-06 16:52:46.331620666 -0400
-@@ -705,6 +705,11 @@
-     targ_selvecs="i386_elf32_vec"
++++ dirty/binutils-2.45/bfd/config.bfd	2025-09-12 21:53:35.884468873 -0400
+@@ -274,6 +274,11 @@
+     targ_selvecs="aarch64_elf64_be_vec arm_elf32_le_vec arm_elf32_be_vec"
      want64=true
      ;;
++  aarch64-*-ethos*)
++    targ_defvec=aarch64_elf64_le_vec
++    targ_selvecs="aarch64_elf64_be_vec arm_elf32_le_vec arm_elf32_be_vec"
++    want64=true
++    ;;
+   aarch64-*-cloudabi*)
+     targ_defvec=aarch64_elf64_le_cloudabi_vec
+     targ_selvecs=aarch64_elf64_be_cloudabi_vec
+@@ -704,6 +709,16 @@
+     targ_defvec=x86_64_elf64_vec
+     targ_selvecs="i386_elf32_vec"
+     want64=true
++    ;;
 +  x86_64-*-ethos*)
 +    targ_defvec=x86_64_elf64_vec
 +    targ_selvecs="i386_elf32_vec"
 +    want64=true
 +    ;;
++  x86_64-*-ethos*)
++    targ_defvec=x86_64_elf64_vec
++    targ_selvecs="i386_elf32_vec"
++    want64=true
+     ;;
    x86_64-*-netbsd* | x86_64-*-openbsd*)
      targ_defvec=x86_64_elf64_vec
-     targ_selvecs="i386_elf32_vec iamcu_elf32_vec i386_coff_vec i386_pei_vec x86_64_pe_vec x86_64_pei_vec"
 diff -ruN clean/clean/binutils-2.45/config.guess dirty/binutils-2.45/config.guess
 --- clean/clean/binutils-2.45/config.guess	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/config.guess	2025-09-06 16:33:39.194612360 -0400
++++ dirty/binutils-2.45/config.guess	2025-09-12 21:53:35.885468885 -0400
 @@ -1600,6 +1600,9 @@
      *:Ironclad:*:*)
  	GUESS=$UNAME_MACHINE-unknown-ironclad
@@ -28,7 +45,7 @@ diff -ruN clean/clean/binutils-2.45/config.guess dirty/binutils-2.45/config.gues
  # Do we have a guess based on uname results?
 diff -ruN clean/clean/binutils-2.45/config.sub dirty/binutils-2.45/config.sub
 --- clean/clean/binutils-2.45/config.sub	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/config.sub	2025-09-06 16:31:02.054611222 -0400
++++ dirty/binutils-2.45/config.sub	2025-09-12 21:53:35.888123944 -0400
 @@ -2013,6 +2013,7 @@
  	| gnu* \
  	| go32* \
@@ -39,7 +56,7 @@ diff -ruN clean/clean/binutils-2.45/config.sub dirty/binutils-2.45/config.sub
  	| hms* \
 diff -ruN clean/clean/binutils-2.45/configure.ac dirty/binutils-2.45/configure.ac
 --- clean/clean/binutils-2.45/configure.ac	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/configure.ac	2025-09-06 16:34:40.570612805 -0400
++++ dirty/binutils-2.45/configure.ac	2025-09-12 21:53:35.889468932 -0400
 @@ -351,7 +351,7 @@
        *-*-elf* | *-*-sysv4* | *-*-unixware* | *-*-eabi* | hppa*64*-*-hpux* \
        | *-*-linux* | *-*-gnu* | frv-*-uclinux* | *-*-irix5* | *-*-irix6* \
@@ -49,20 +66,18 @@ diff -ruN clean/clean/binutils-2.45/configure.ac dirty/binutils-2.45/configure.a
          case "${target}" in
            *-*-linux*aout* | *-*-linux*oldld*)
              ;;
-diff -ruN clean/clean/binutils-2.45/gas/config/te-ethos.h dirty/binutils-2.45/gas/config/te-ethos.h
---- clean/clean/binutils-2.45/gas/config/te-ethos.h	1969-12-31 19:00:00.000000000 -0500
-+++ dirty/binutils-2.45/gas/config/te-ethos.h	2025-09-06 17:04:04.439625576 -0400
-@@ -0,0 +1,6 @@
-+#define TE_Ethos 1
-+
-+#define LOCAL_LABELS_DOLLAR 1
-+#define LOCAL_LABELS_FB 1
-+
-+#include "obj-format.h"
 diff -ruN clean/clean/binutils-2.45/gas/configure.tgt dirty/binutils-2.45/gas/configure.tgt
 --- clean/clean/binutils-2.45/gas/configure.tgt	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/gas/configure.tgt	2025-09-06 16:58:34.259623185 -0400
-@@ -231,6 +231,7 @@
++++ dirty/binutils-2.45/gas/configure.tgt	2025-09-12 21:53:35.891987731 -0400
+@@ -130,6 +130,7 @@
+   aarch64*-*-fuchsia*)			fmt=elf;;
+   aarch64*-*-haiku*)			fmt=elf em=haiku ;;
+   aarch64*-*-genode*)			fmt=elf;;
++  aarch64*-*-ethos*)			fmt=elf;;
+   aarch64*-*-linux*)			fmt=elf em=linux
+     case ${cpu}-${os} in
+       aarch64*-linux-gnu_ilp32)		arch=aarch64:32 ;;
+@@ -231,6 +232,7 @@
    i386-*-elf*)				fmt=elf ;;
    i386-*-fuchsia*)			fmt=elf ;;
    i386-*-haiku*)			fmt=elf em=haiku ;;
@@ -72,8 +87,18 @@ diff -ruN clean/clean/binutils-2.45/gas/configure.tgt dirty/binutils-2.45/gas/co
    i386-*-netbsd*-gnu* | \
 diff -ruN clean/clean/binutils-2.45/ld/configure.tgt dirty/binutils-2.45/ld/configure.tgt
 --- clean/clean/binutils-2.45/ld/configure.tgt	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/ld/configure.tgt	2025-09-06 17:41:47.518641962 -0400
-@@ -1019,6 +1019,9 @@
++++ dirty/binutils-2.45/ld/configure.tgt	2025-09-12 21:53:35.893075130 -0400
+@@ -98,6 +98,9 @@
+ aarch64-*-fuchsia*)	targ_emul=aarch64elf
+ 			targ_extra_emuls="aarch64elfb armelf armelfb"
+ 			;;
++aarch64-*-ethos*)	targ_emul=aarch64elf
++			targ_extra_emuls="aarch64elfb armelf armelfb"
++			;;
+ aarch64_be-*-linux-gnu_ilp32)
+ 			targ_emul=aarch64linux32b
+ 			targ_extra_libpath="aarch64linuxb aarch64linux aarch64linux32 armelfb_linux_eabi armelf_linux_eabi"
+@@ -1019,6 +1022,9 @@
  x86_64-*-redox*)	targ_emul=elf_x86_64
  			targ_extra_emuls=elf_i386
  			;;
@@ -83,28 +108,25 @@ diff -ruN clean/clean/binutils-2.45/ld/configure.tgt dirty/binutils-2.45/ld/conf
  x86_64-*-solaris2*)	targ_emul=elf_x86_64_sol2
  			targ_extra_emuls="elf_x86_64 elf_i386_sol2 elf_i386_ldso elf_i386 elf_iamcu"
  			targ_extra_libpath=$targ_extra_emuls
-diff -ruN clean/clean/binutils-2.45/ld/emulparams/elf_ethos.sh dirty/binutils-2.45/ld/emulparams/elf_ethos.sh
---- clean/clean/binutils-2.45/ld/emulparams/elf_ethos.sh	1969-12-31 19:00:00.000000000 -0500
-+++ dirty/binutils-2.45/ld/emulparams/elf_ethos.sh	2025-09-06 17:15:09.236630389 -0400
-@@ -0,0 +1 @@
-+ELF_INTERPRETER_NAME=""
-diff -ruN clean/clean/binutils-2.45/ld/emulparams/elf_i386_ethos.sh dirty/binutils-2.45/ld/emulparams/elf_i386_ethos.sh
---- clean/clean/binutils-2.45/ld/emulparams/elf_i386_ethos.sh	1969-12-31 19:00:00.000000000 -0500
-+++ dirty/binutils-2.45/ld/emulparams/elf_i386_ethos.sh	2025-09-06 17:29:46.307636740 -0400
-@@ -0,0 +1,4 @@
-+source_sh ${srcdir}/emulparams/elf_i386.sh
-+TEXT_START_ADDR=0x1000
-+NONPAGED_TEXT_START_ADDR=0x1000
-+MAXPAGESIZE=0x1000
-diff -ruN clean/clean/binutils-2.45/ld/emulparams/elf_x86_64_ethos.sh dirty/binutils-2.45/ld/emulparams/elf_x86_64_ethos.sh
---- clean/clean/binutils-2.45/ld/emulparams/elf_x86_64_ethos.sh	1969-12-31 19:00:00.000000000 -0500
-+++ dirty/binutils-2.45/ld/emulparams/elf_x86_64_ethos.sh	2025-09-06 17:27:45.556635866 -0400
-@@ -0,0 +1 @@
-+source_sh ${srcdir}/emulparams/elf_x86_64.sh
 diff -ruN clean/clean/binutils-2.45/ld/Makefile.am dirty/binutils-2.45/ld/Makefile.am
 --- clean/clean/binutils-2.45/ld/Makefile.am	2025-07-26 19:00:00.000000000 -0400
-+++ dirty/binutils-2.45/ld/Makefile.am	2025-09-06 17:31:15.703637387 -0400
-@@ -462,6 +462,7 @@
++++ dirty/binutils-2.45/ld/Makefile.am	2025-09-12 21:53:35.893468979 -0400
+@@ -384,12 +384,14 @@
+ 	eaarch64fbsd.c \
+ 	eaarch64fbsdb.c \
+ 	eaarch64haiku.c \
++	eaarch64ethos.c \
+ 	eaarch64linux.c \
+ 	eaarch64linux32.c \
+ 	eaarch64linux32b.c \
+ 	eaarch64linuxb.c \
+ 	eaarch64nto.c \
+ 	eaarch64pe.c \
++	eaarch64ethos.c \
+ 	earm64pe.c \
+ 	eelf32_x86_64.c \
+ 	eelf32b4300.c \
+@@ -462,6 +464,7 @@
  	eelf_x86_64_cloudabi.c \
  	eelf_x86_64_fbsd.c \
  	eelf_x86_64_haiku.c \

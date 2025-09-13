@@ -38,12 +38,23 @@ patch_gcc() {
 build_binutils() {
     mkdir -p build-binutils/
     cd build-binutils
-    ../dirty/binutils-2.45/configure --target=x86_64-pc-ethos --prefix=$(pwd);
+    ../dirty/binutils-2.45/configure --target=aarch64-ethos --prefix=$(pwd);
     make -j$(NCORES)
     make install
 
     cd ../
     echo "[?] binutils is in build-binutils/"
+}
+
+build_gcc() {
+    mkdir -p build-gcc/
+    cd build-gcc
+    ../dirty/binutils-2.45/configure --target=x86_64-pc-ethos --prefix=$(pwd);
+    make -j$(NCORES)
+    make install
+
+    cd ../
+    echo "[?] gcc is in build-binutils/"
 }
 
 # Clean everything up
